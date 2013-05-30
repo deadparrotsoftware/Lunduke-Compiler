@@ -1,0 +1,232 @@
+/*
+ * Copyright (c) 2013 Shane Quigley
+ *
+ * This software is MIT licensed see link for details
+ * http://www.opensource.org/licenses/MIT
+ *
+ * @author Shane Quigley
+ */
+options
+{
+  JDK_VERSION = "1.7";
+  static = true;
+}
+
+PARSER_BEGIN(LundukeParser)
+
+public class LundukeParser
+{
+  public static void main(String args[]) { 
+    LundukeParser parser;
+    java.io.InputStream input;
+
+    if (args.length==1) {
+      System.out.print(args[args.length-1] + ": ");
+      try {
+        input = new java.io.FileInputStream(args[args.length-1]);
+      } catch (java.io.FileNotFoundException e) {
+        System.out.println("File not found.");
+        return;
+      }
+    } else if (args.length==0) {
+      System.out.println("Reading from standard input...");
+      input = System.in;
+    } else {
+      System.out.println("Usage: java Ass3 [inputfile]");
+      return;
+    }
+    try {
+      parser = new LundukeParser(input);
+      parser.translation_unit();
+      System.out.println("Successful parse!");
+    } catch (ParseException e) {
+      String msg = e.getMessage();
+      msg = msg.substring(0,msg.indexOf("\n"));
+      System.out.println("Syntax Error: "+msg);
+    }
+  }
+}
+
+PARSER_END(LundukeParser)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+}
+
+TOKEN : /* Key Words */
+{
+  < BEGIN : "Make" >
+| < WP : "WithParameters:" >
+| < WT : "WithText:" >
+| < WC : "WithCode:" >
+| < WHILE : "While" >
+| < IF : "If" >
+| < ELSE : "Else" >
+| < END : "Done" >
+}
+
+TOKEN : /* Math Operators */ 
+{
+  < MULTIPLY : "*" >
+| < MINUS : "-" >
+| < PLUS : "+" >
+| < BECOME : ":=" >
+| < MOD : "mod" >
+| < DIVIDE : "/" >
+}
+
+TOKEN : /* Boolean Operators */ 
+{
+  < EQUAL : "=" >
+| < GREATER_THAN : ">" >
+| < LESS_THAN : "<" >
+| < NOT_EQUAL : "!="  >
+}
+
+TOKEN : /* SEPARATORS */ 
+{
+  < LINE_BREAK : "\n" >
+| < COMMA : "," >
+| < LSQB : "[" >
+| < RSQB : "]" >
+}
+
+TOKEN : /* Number and Id */
+{
+  < NUM : (< DIGIT >)+ >
+| < #DIGIT : [ "0"-"9" ] >
+| < ID : (< LETTER >)(< LETTER >|< DIGIT >)+ >
+| < #LETTER : ["a"-"z","A"-"Z"] >
+| < STRING : "\"" (~["\""])* "\"" >
+/* TODO:Figure out how string work in Lunduke and implement properly */
+}
+
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "#" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+}
+
+/* START OF GRAMMAR*/
+void translation_unit() : {}
+{
+  S()
+}
+void S() : {}
+{
+   Function() S() | Function()
+}
+
+void Function() : {}
+{
+  < BEGIN > < ID > Args() < LINE_BREAK > Stmts() < LINE_BREAK > < END >
+}
+
+void Args() : {}
+{
+  < WP > List()
+| {}
+}
+
+void List() : {}
+{
+  < LSQB > ListValues() < RSQB >
+}
+
+void ListValues() : {}
+{
+  < STRING > < COMMA > ListValues()
+| Factor() < COMMA > ListValues()
+| {}
+}
+
+void Stmts () : {}
+{
+  Stmt() StmtsRest()
+}
+
+void StmtsRest() : {}
+{
+  [< LINE_BREAK > Stmt() StmtsRest()]
+}
+
+void Stmt() : {}
+{
+  Assn()
+| Ifstmt()
+| Loop()
+| FunctionCall() /* Probably show be also put in Assn and add return Stmt */
+}
+
+void Assn() : {}
+{
+  < ID > < BECOME > Comp()
+}
+
+void FunctionCall() : {}
+{
+  < ID > Args()
+| < ID > < WT > < STRING >
+| < ID > < WC > < NUM >
+}
+
+
+void Arith() : {}
+{
+  Term() ArithRest()
+}
+
+void ArithRest() : {}
+{
+  <PLUS> Term() ArithRest()
+| <MINUS> Term() ArithRest()
+| {}
+}
+
+void Term() : {}
+{
+  Factor() TermRest()
+}
+
+void TermRest() : {}
+{
+  < MULTIPLY > Factor() TermRest()
+  < MOD > Factor() TermRest()
+  < DIVIDE > Factor() TermRest()
+| {}
+}
+
+void Factor() : {}
+{
+  < ID >
+| < NUM >
+}
+
+void Ifstmt() : {}
+{
+  < IF > Comp() < LINE_BREAK > Stmts() < LINE_BREAK > < ELSE > < LINE_BREAK > Stmts() < LINE_BREAK > < END >
+}
+
+void Loop() : {}
+{
+  < WHILE > Comp() < LINE_BREAK > Stmts() < LINE_BREAK > < END >
+}
+
+void Comp() : {}
+{
+  Arith() CompRest()
+}
+
+void CompRest() : {}
+{
+  < EQUAL > Arith()
+| < GREATER_THAN > Arith()
+| < LESS_THAN > Arith()
+| < NOT_EQUAL > Arith()
+| {}
+}
+
+
+ 
