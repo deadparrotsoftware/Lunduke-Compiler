@@ -1,0 +1,34 @@
+S ::= S Function | Function
+Function ::= Make id Args linebreak Stmts linebreak Done
+Args ::= WithParameters: List | ϵ
+List ::= [ ListValues ]
+ListValues = string , ListValues | Factor , ListValues | ϵ
+Stmts ::= Stmt | Stmts linebreak Stmt
+Stmt ::= Assn | Ifstmt | Loop | Comment | FunctionCall
+Assn ::= id = Arith | id = Comp
+FunctionCall ::= id Args | id WithText:string | id WithCode:number
+Arith ::= Term | Arith + Term | Arith - Term
+Term ::= Factor | Term * Factor | Term / Factor | Term mod Factor
+Factor ::= id | num
+Ifstmt ::= If Comp linebreak Stmts Else Stmts Done
+Loop ::= While Comp linebreak Stmts Done
+Comp ::= Arith CompOperator Arith | 
+CompOperator :: equals | greaterthan | lessthan | notequal
+
+tokens/keywords:
+Make
+Done
+WithParameters:
+[
+]
+,
+linebreak = \n
+id = \w(\w|\d)+
+string = "(\\"|^")+"
+num = \d+|\d+.\d+
+If
+Else
+equals = == | Equals
+greaterthan = > | GreaterThan
+lessthan = < | LessThan
+notequal = != | NotEqual
