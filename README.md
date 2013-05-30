@@ -9,7 +9,7 @@ Grammar is mostly guess work based off a screen shot of LDE and unfortunately do
 
 ### Plan :
 
-* Create Grammar (done)
+* Create Grammar
 
 * Removed Left Recursion from the Grammar
 
@@ -19,15 +19,25 @@ Grammar is mostly guess work based off a screen shot of LDE and unfortunately do
 
 * Write a compiler based on the parse tree
 
-Probably going to do the first 3 by hand and the last 2 either by using a framework like Javacc(since I've used it before) or in Ruby/Node.
-
-Hope to have a working parser within the week.
+At Step 4 at the moment but will have to refine the Grammar significantly especially if details are released about the language.
 
 ### License :
 
 * This software is MIT licensed see link for details
 
 * http://www.opensource.org/licenses/MIT
+
+### Get Involved:
+
+Using Javacc, Google it to know more about the syntax.
+
+To buil the Grammar:
+
+    sudo apt-get install javacc
+    cd Javacc Parser
+    javacc LundukeGrammar.jj
+    javac LundukeParser
+    java LundukeParser # Takes input from stdin or file
 
 ### Note on copy right:
 
