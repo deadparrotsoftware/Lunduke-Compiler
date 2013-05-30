@@ -116,7 +116,7 @@ void translation_unit() : {}
 }
 void S() : {}
 {
-   Function() S() | Function()
+   Function() S()
 }
 
 void Function() : {}
@@ -157,7 +157,7 @@ void Stmt() : {}
   Assn()
 | Ifstmt()
 | Loop()
-| FunctionCall() /* Probably show be also put in Assn and add return Stmt */
+// | FunctionCall() /* Probably show be also put in Assn and add return Stmt */
 }
 
 void Assn() : {}
@@ -165,12 +165,12 @@ void Assn() : {}
   < ID > < BECOME > Comp()
 }
 
-void FunctionCall() : {}
-{
-  < ID > Args()
-| < ID > < WT > < STRING >
-| < ID > < WC > < NUM >
-}
+// void FunctionCall() : {}
+// {
+//   < ID > Args()
+// | < ID > < WT > < STRING >
+// | < ID > < WC > < NUM >
+// }
 
 
 void Arith() : {}

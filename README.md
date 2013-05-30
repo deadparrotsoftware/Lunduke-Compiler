@@ -36,7 +36,7 @@ To buil the Grammar:
     sudo apt-get install javacc
     cd Javacc Parser
     javacc LundukeGrammar.jj
-    javac LundukeParser
+    javac LundukeParser.java
     java LundukeParser # Takes input from stdin or file
 
 ### Note on copy right:
