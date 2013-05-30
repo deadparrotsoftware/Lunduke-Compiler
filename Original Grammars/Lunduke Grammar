@@ -12,8 +12,8 @@ Term ::= Factor | Term * Factor | Term / Factor | Term mod Factor
 Factor ::= id | num
 Ifstmt ::= If Comp linebreak Stmts Else Stmts Done
 Loop ::= While Comp linebreak Stmts Done
-Comp ::= Arith CompOperator Arith | 
-CompOperator :: equals | greaterthan | lessthan | notequal
+Comp ::= Arith CompOperator Arith
+CompOperator ::= equals | greaterthan | lessthan | notequal
 
 tokens/keywords:
 Make

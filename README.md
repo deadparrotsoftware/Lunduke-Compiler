@@ -29,6 +29,10 @@ Hope to have a working parser within the week.
 
 * http://www.opensource.org/licenses/MIT
 
+### Note on copy right:
+
+* I don't own copy right on the name Lunduke-Language or Lunduke-SDK or anything of the sort. If someone does I'll change the name.
+
 ### PS to Bryan:
 
 If I need to change the name(or you just want me too) let me know and I will do so immediately.

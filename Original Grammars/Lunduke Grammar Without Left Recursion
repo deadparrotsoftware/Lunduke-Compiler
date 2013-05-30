@@ -3,7 +3,7 @@ Function ::= Make id Args linebreak Stmts linebreak Done
 Args ::= WithParameters: List | ϵ
 List ::= [ ListValues ]
 ListValues = string , ListValues | Factor , ListValues | ϵ
-Stmts ::= Stmt | Stmts linebreak Stmt
+Stmts ::= Stmt StmtsRest
 StmtsRest ::= linebreak Stmt StmtsRest | ϵ
 Stmt ::= Assn | Ifstmt | Loop | Comment | FunctionCall
 Assn ::= id = Arith | id = Comp
@@ -15,8 +15,8 @@ TermRest ::= * Factor TermRest | / Factor TermRest | mod Factor TermRest | ϵ
 Factor ::= id | num
 Ifstmt ::= If Comp linebreak Stmts Else Stmts Done
 Loop ::= While Comp linebreak Stmts Done
-Comp ::= Arith CompOperator Arith | 
-CompOperator :: equals | greaterthan | lessthan | notequal
+Comp ::= Arith CompOperator Arith
+CompOperator ::= equals | greaterthan | lessthan | notequal
 
 tokens/keywords:
 Make
